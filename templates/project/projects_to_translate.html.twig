@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Projects to Translate</h1>
+
+    {% if projects is empty %}
+        <p>You are not subscribed to any projects.</p>
+    {% else %}
+        <div class="row">
+            {% for project in projects %}
+                <div class="col-md-4">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.name }}</h5>
+                            <a href="{{ path('app_project_to_translate_sources', {'id': project.id}) }}">View sources</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

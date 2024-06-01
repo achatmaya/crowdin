@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Projects by Language{% endblock %}
+
+{% block body %}
+    <h1>Projects by Language</h1>
+
+    {% if projects|length > 0 %}
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for project in projects %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ project.language.label }}</h6>
+                        <ul>
+                            {% for language in project.getTargetLanguages() %}
+                                <li>{{ language.label }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% if app.user is not null %}
+                            {% if project.translators.contains(app.user) %}
+                                <button disabled class="btn btn-primary">You are a translator</button>
+                            {% else %}
+                                <form action="{{ path('app_project_subscribe', { 'id': project.id }) }}" method="post">
+                                    <button type="submit" class="btn btn-primary">Subscribe to project</button>
+                                    <input type="hidden" name="_token" value="{{ csrf_token('subscribe_to_project_' ~ project.id) }}" />
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>No projects found for the selected languages.</p>
+    {% endif %}
+{% endblock %}

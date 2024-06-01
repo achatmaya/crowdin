@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sources for project "{{ project.getName() }}"</h1>
+    {% if sources is empty %}
+        <p>There are no sources for this project yet.</p>
+    {% else %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Content</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for source in sources %}
+                <tr>
+                    <td>{{ source.getId() }}</td>
+                    <td>{{ source.getName() }}</td>
+                    <td>{{ source.getContent() }}</td>
+                    <td>
+                        <a href="{{ path('app_add_translation', {'id': source.getId()}) }}" class="btn btn-primary">Add Translation</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}
